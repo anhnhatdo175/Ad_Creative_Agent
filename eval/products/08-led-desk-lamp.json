@@ -1,0 +1,15 @@
+{
+  "name": "LED desk lamp",
+  "category": "Home goods",
+  "description": "An LED desk lamp with three brightness settings and a USB-C charging port.",
+  "features": ["Three brightness settings", "USB-C port"],
+  "price": null,
+  "rating": null,
+  "reviews": [],
+  "images": [],
+  "source_url": null,
+  "facts": [
+    {"fact_id": "fact_1", "label": "feature", "value": "The lamp has three brightness settings.", "source_snippet": "The lamp has three brightness settings."},
+    {"fact_id": "fact_2", "label": "port", "value": "The lamp has a USB-C charging port.", "source_snippet": "The lamp has a USB-C charging port."}
+  ]
+}

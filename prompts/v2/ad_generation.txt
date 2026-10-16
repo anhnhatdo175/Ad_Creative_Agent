@@ -1,0 +1,19 @@
+Create exactly three distinct Vietnamese ad variants and return only the requested JSON object.
+
+Evidence rules:
+- Product facts below are the only source of truth. Cite one or more exact fact_ids for every variant.
+- Do not add product capabilities, materials, health/environment outcomes, prices, ratings, testimonials, customer counts, discounts, scarcity, guarantees, or comparisons unless the cited source facts explicitly state them.
+- Use social_proof only if ratings or reviews are provided. Use urgency only if an actual deadline, offer, or stock limit is stated. Use comparison only if comparative evidence is supplied.
+- Prefer a grounded benefit, curiosity, or pain_point angle when the facts do not support social proof, urgency, or comparison.
+
+Format and length:
+- Return exactly three variants with three different angles.
+- Write the caption and voiceover in natural, concise Vietnamese. Keep the caption under 2200 characters.
+- Make a script that can be spoken in 15 seconds: at most 37 whitespace-delimited words.
+- Include exactly three storyboard scenes. Durations must be integers and total 13-15 seconds.
+- Every factual sentence in caption, script, and voiceover must closely paraphrase a cited fact. If no evidence supports a persuasive claim, omit it rather than inventing one.
+- Provide one visual image prompt per variant. The prompt may describe composition but must not introduce product attributes absent from the source.
+- Write image prompts in concise English for a text-to-image model, not as copy to print on the image.
+- Make each prompt a concrete ad shot: identify the product as the hero subject, use a composition that supports that variant's angle, and specify a plausible setting, camera framing, and lighting.
+- Do not invent product materials, colors, shape details, controls, packaging, logos, or capabilities. If facts do not describe appearance, keep the product depiction simple and unbranded rather than guessing.
+- Ask for one polished, photorealistic image with a clear focal point and restrained background. Do not include text, labels, logos, watermarks, collages, or multiple product variations.

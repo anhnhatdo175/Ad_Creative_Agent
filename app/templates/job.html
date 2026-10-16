@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f8f5">
+  <title>Ad pack · {{ job.id[:8] }}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Ad Creative Agent home">
+        <span class="brand-mark" aria-hidden="true">A</span>
+        <span class="brand-name">Ad Creative Agent</span>
+      </a>
+      <a class="button secondary" href="/">＋ New ad pack</a>
+    </header>
+    <div class="page-intro">
+      <div class="status-line">
+        <p class="eyebrow">AD PACK · {{ job.id[:8] }}</p>
+        <span class="status status-{{ job.status }}" id="job-status-badge">{{ job.status }}</span>
+      </div>
+      <h1 id="job-status-heading">
+        {% if job.status in ["queued", "running"] %}Your concepts are taking shape{% elif job.status == "failed" %}This generation needs attention{% elif job.status == "partial" %}Your ad pack is partially ready{% else %}Your ad concepts are ready{% endif %}
+      </h1>
+      {% if job.status == "succeeded" or job.status == "partial" %}
+        <p class="lead">Review concepts and verify claims before publishing.</p>
+      {% endif %}
+    </div>
+    {% if job.product_facts %}
+      <details class="panel">
+        <summary>Source facts</summary>
+        <p>{{ job.product_facts.name }} — {{ job.product_facts.description }}</p>
+        <ul>{% for fact in job.product_facts.facts %}<li><strong>{{ fact.fact_id }}</strong>: {{ fact.source_snippet }}</li>{% endfor %}</ul>
+      </details>
+    {% endif %}
+    {% if job.error %}<div class="alert" role="alert">{{ job.error }}</div>{% endif %}
+    {% if job.status == "failed" %}
+      <form action="/jobs/{{ job.id }}/retry" method="post"><button>Retry generation <span aria-hidden="true">↻</span></button></form>
+    {% endif %}
+    {% if job.status in ["queued", "running"] %}
+      <div class="panel progress-panel" id="job-progress" data-job-id="{{ job.id }}">
+        <span class="spinner" aria-hidden="true"></span>
+        <p id="job-progress-message" role="status" aria-live="polite">
+          {% if job.status == "queued" %}Queued. Waiting to start.{% else %}Generating with the local model…{% endif %}
+        </p>
+      </div>
+      <script>
+        (() => {
+          const progress = document.getElementById("job-progress");
+          const message = document.getElementById("job-progress-message");
+          const heading = document.getElementById("job-status-heading");
+          const badge = document.getElementById("job-status-badge");
+          const jobId = progress.dataset.jobId;
+          let checking = false;
+
+          async function checkStatus() {
+            if (checking) return;
+            checking = true;
+            try {
+              const response = await fetch(`/jobs/${encodeURIComponent(jobId)}`, {
+                headers: { Accept: "application/json" },
+              });
+              if (!response.ok) {
+                throw new Error(`Status check returned ${response.status}.`);
+              }
+              const job = await response.json();
+              if (job.status === "queued" || job.status === "running") {
+                badge.textContent = job.status;
+                badge.className = `status status-${job.status}`;
+                heading.textContent = "Your concepts are taking shape";
+                message.textContent = job.status === "queued"
+                  ? "Your job is queued. It will start shortly."
+                  : "Generating ads with the local model. This can take a few minutes on some computers.";
+                window.setTimeout(checkStatus, 2500);
+                return;
+              }
+              window.location.reload();
+            } catch (error) {
+              message.textContent = `Could not check job status. Retrying: ${error.message}`;
+              window.setTimeout(checkStatus, 5000);
+            } finally {
+              checking = false;
+            }
+          }
+
+          window.setTimeout(checkStatus, 2500);
+        })();
+      </script>
+    {% endif %}
+    {% if job.variants %}
+      <div class="section-heading">
+        <h2>Concepts <span class="label-note">({{ job.variants | length }})</span></h2>
+      </div>
+      <div class="grid">
+      {% for variant in job.variants %}
+        <article class="panel variant-card">
+          <p class="eyebrow">{{ variant.angle | replace("_", " ") }}</p>
+          <h2>{{ variant.caption.split('\n')[0] }}</h2>
+          <p class="copy">{{ variant.caption }}</p>
+          {% if variant.flags %}<p class="alert" role="note"><strong>Needs review:</strong> {{ variant.flags | join(", ") }}</p>{% endif %}
+          <h3>15-second script</h3><p>{{ variant.script }}</p>
+          <h3>Storyboard</h3>
+          <ol>{% for scene in variant.storyboard %}<li>{{ scene.duration }}s — {{ scene.visual }} <em>{{ scene.voiceover }}</em></li>{% endfor %}</ol>
+          <details class="fact-details">
+            <summary>Image prompt & evidence</summary>
+            <p class="hint"><strong>Prompt sent to FLUX:</strong> {{ variant.flux_prompt }}</p>
+            <p class="hint"><strong>Sources:</strong> {{ variant.fact_ids | join(", ") }}</p>
+          </details>
+          {% if variant.image and variant.image.status == "succeeded" and not job.product_facts.source_url %}
+            <img class="generated-image" src="{{ variant.image.url }}" alt="Generated concept artwork">
+          {% elif variant.image and variant.image.status == "generating" %}
+            <p class="hint" role="status">Generating image…</p>
+          {% elif variant.image and variant.image.status == "failed" %}
+            <p class="alert" role="alert">{{ variant.image.error }}</p>
+          {% endif %}
+          {% if image_generation_configured and not job.product_facts.source_url %}
+            {% if not variant.image or variant.image.status in ["failed", "succeeded"] %}
+              <form action="/variants/{{ variant.id }}/image" method="post" class="image-form">
+                <button type="submit" class="secondary">
+                  {% if variant.image and variant.image.status == "failed" %}Retry image{% elif variant.image and variant.image.status == "succeeded" %}Regenerate image{% else %}Generate image with FLUX{% endif %}
+                </button>
+                <p class="field-hint">Cloudflare Workers AI · uses quota. Check product details in the image.</p>
+              </form>
+            {% endif %}
+          {% elif job.product_facts.source_url %}
+            <p class="field-hint">Product URL concepts use original product images when available.</p>
+          {% else %}
+            <p class="field-hint">Set Cloudflare credentials in .env to enable image generation.</p>
+          {% endif %}
+          <a class="button secondary" href="/l/{{ variant.id }}">Open landing page <span aria-hidden="true">↗</span></a>
+        </article>
+      {% endfor %}
+      </div>
+      <div class="toolbar">
+        <a class="button" href="/jobs/{{ job.id }}/dashboard">View experiment results <span aria-hidden="true">→</span></a>
+        <a class="button secondary" href="/jobs/{{ job.id }}/export.json">Download JSON</a>
+        <a class="button secondary" href="/jobs/{{ job.id }}/export.zip">Download ZIP</a>
+      </div>
+    {% else %}
+      {% if job.status not in ["queued", "running"] %}
+        <div class="panel"><h2>No concepts available yet</h2><p class="hint">Review the message above, then retry generation.</p></div>
+      {% endif %}
+    {% endif %}
+  </main>
+</body>
+</html>

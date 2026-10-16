@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f8f5">
+  <title>Experiment results · {{ job.id[:8] }}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Ad Creative Agent home">
+        <span class="brand-mark" aria-hidden="true">A</span>
+        <span class="brand-name">Ad Creative Agent</span>
+      </a>
+      <a class="button secondary" href="/jobs/{{ job.id }}/page">← Back to ad pack</a>
+    </header>
+    <div class="page-intro">
+      <p class="eyebrow">EXPERIMENT · {{ job.id[:8] }}</p>
+      <h1>Compare ad concepts</h1>
+      <p class="lead">Views, clicks, and CTR by concept.</p>
+    </div>
+    <div class="toolbar">
+      <a class="button secondary" href="/jobs/{{ job.id }}/export.json">Download JSON</a>
+      <a class="button secondary" href="/jobs/{{ job.id }}/export.zip">Download ZIP</a>
+    </div>
+    {% if not metrics.sufficient_data %}
+      <div class="alert" role="status">Need {{ minimum_views }} views per concept before estimating a winner.</div>
+    {% else %}
+      <div class="panel progress-panel" role="status">
+        <span class="check" aria-hidden="true">✓</span>
+        <p>Minimum sample reached. Winner probability is an estimate.</p>
+      </div>
+    {% endif %}
+    <section aria-labelledby="concept-results-title">
+      <div class="section-heading">
+        <h2 id="concept-results-title">Performance by concept</h2>
+        <p>CTR = clicks ÷ views</p>
+      </div>
+      <div class="grid dashboard-grid">
+        {% for metric in metrics.variants %}
+          <article class="panel">
+            <p class="eyebrow">{{ metric.angle | replace("_", " ") }}</p>
+            <h2>{{ metric.angle | replace("_", " ") | title }}</h2>
+            <p class="metric">{{ "%.1f" | format(metric.ctr * 100) }}<span>% CTR</span></p>
+            <p><strong>{{ metric.clicks }}</strong> clicks from <strong>{{ metric.views }}</strong> views</p>
+            <div class="bar-track" role="img" aria-label="CTR {{ '%.1f' | format(metric.ctr * 100) }} percent">
+              <div class="bar-fill" style="width: {{ [metric.ctr * 100, 100] | min }}%"></div>
+            </div>
+            <p class="hint">95% interval: {{ "%.1f" | format(metric.wilson_95[0] * 100) }}%–{{ "%.1f" | format(metric.wilson_95[1] * 100) }}%</p>
+            {% if metric.probability_best is not none %}
+              <p>Chance of being best: <strong>{{ "%.1f" | format(metric.probability_best * 100) }}%</strong></p>
+            {% else %}
+              <p class="hint">Estimate available after minimum views.</p>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+    <section aria-labelledby="usage-title">
+      <div class="section-heading">
+        <h2 id="usage-title">Local model usage</h2>
+        <p>Generation details for this ad pack</p>
+      </div>
+      <div class="panel usage-panel">
+        <div>
+          <h2>{{ usage.model }}</h2>
+          <p class="hint">{{ job.steps | length }} pipeline steps · Local inference</p>
+        </div>
+        <div class="usage-numbers">
+          <span class="usage-chip">{{ usage.input_tokens }} input tokens</span>
+          <span class="usage-chip">{{ usage.output_tokens }} output tokens</span>
+          <span class="usage-chip">{{ "%.1f" | format(usage.latency_ms / 1000) }}s total</span>
+          <span class="usage-chip">${{ "%.4f" | format(usage.cost) }} API cost</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

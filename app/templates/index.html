@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f8f5">
+  <meta name="description" content="Create evidence-aware ad concepts locally from your product facts.">
+  <title>Create an ad pack · Ad Creative Agent</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Ad Creative Agent home">
+        <span class="brand-mark" aria-hidden="true">A</span>
+        <span class="brand-name">Ad Creative Agent</span>
+      </a>
+      <span class="header-note">Local · Ollama</span>
+    </header>
+    <div class="hero-layout">
+      <section class="hero-copy" aria-labelledby="hero-title">
+        <p class="eyebrow">AD CREATIVE AGENT</p>
+        <h1 id="hero-title">Turn product facts into ad concepts.</h1>
+        <p class="lead">Generate three ad concepts locally with Ollama.</p>
+      </section>
+      <section aria-labelledby="form-title">
+        <form action="/jobs" method="post" class="panel form-panel" id="create-form">
+          <div class="form-heading">
+            <h2 id="form-title">Product details</h2>
+            <p>Enter a URL, description, or both.</p>
+          </div>
+          {% if error %}<div class="form-error" role="alert">{{ error }}</div>{% endif %}
+          <div class="field">
+            <label for="url">Product page URL <span>OPTIONAL</span></label>
+            <input id="url" name="url" type="url" autocomplete="url" inputmode="url"
+              placeholder="https://example.com/product" aria-describedby="url-hint">
+            <p class="field-hint" id="url-hint">Optional. Public product pages only.</p>
+          </div>
+          <div class="field">
+            <label for="description">Product facts <span id="character-count">0 / 10,000</span></label>
+            <textarea id="description" name="description" rows="6" maxlength="10000"
+              placeholder="Describe the product and its verified features."
+              aria-describedby="description-hint character-count"></textarea>
+            <p class="field-hint" id="description-hint">Use verifiable facts. Optional when URL has the details.</p>
+          </div>
+          <input type="hidden" name="idempotency_key" value="{{ idempotency_key }}">
+          <p id="form-message" class="form-error" role="alert" hidden></p>
+          <button type="submit" class="form-submit" id="submit-button">
+            <span id="submit-label">Generate ad concepts</span><span aria-hidden="true">→</span>
+          </button>
+          <p class="privacy-note"><span><strong>Local Ollama.</strong> Image prompts only.</span></p>
+        </form>
+      </section>
+    </div>
+  </main>
+  <script>
+    (() => {
+      const form = document.getElementById("create-form");
+      const url = document.getElementById("url");
+      const description = document.getElementById("description");
+      const counter = document.getElementById("character-count");
+      const message = document.getElementById("form-message");
+      const button = document.getElementById("submit-button");
+      const label = document.getElementById("submit-label");
+
+      description.addEventListener("input", () => {
+        counter.textContent = `${description.value.length.toLocaleString()} / 10,000`;
+        message.hidden = true;
+      });
+      url.addEventListener("input", () => { message.hidden = true; });
+      form.addEventListener("submit", (event) => {
+        if (!url.value.trim() && !description.value.trim()) {
+          event.preventDefault();
+          message.textContent = "Add a product page URL, product facts, or both to continue.";
+          message.hidden = false;
+          description.focus();
+          return;
+        }
+        button.disabled = true;
+        button.setAttribute("aria-busy", "true");
+        label.textContent = "Starting your ad concepts…";
+      });
+    })();
+  </script>
+</body>
+</html>

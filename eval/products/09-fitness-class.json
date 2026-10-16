@@ -1,0 +1,16 @@
+{
+  "name": "Small-group fitness class",
+  "category": "Fitness service",
+  "description": "A 50-minute instructor-led fitness class for groups of up to eight participants.",
+  "features": ["Instructor-led", "50 minutes", "Up to eight participants"],
+  "price": null,
+  "rating": null,
+  "reviews": [],
+  "images": [],
+  "source_url": null,
+  "facts": [
+    {"fact_id": "fact_1", "label": "format", "value": "The fitness class is instructor-led.", "source_snippet": "The fitness class is instructor-led."},
+    {"fact_id": "fact_2", "label": "duration", "value": "The class lasts 50 minutes.", "source_snippet": "The class lasts 50 minutes."},
+    {"fact_id": "fact_3", "label": "capacity", "value": "The group has up to eight participants.", "source_snippet": "The group has up to eight participants."}
+  ]
+}

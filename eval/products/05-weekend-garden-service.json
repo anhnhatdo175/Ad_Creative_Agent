@@ -1,0 +1,15 @@
+{
+  "name": "Weekend garden service",
+  "category": "Local service",
+  "description": "A garden maintenance service available on weekends. Visits are booked in two-hour slots.",
+  "features": ["Weekend availability", "Two-hour booking slots"],
+  "price": null,
+  "rating": null,
+  "reviews": [],
+  "images": [],
+  "source_url": null,
+  "facts": [
+    {"fact_id": "fact_1", "label": "availability", "value": "The service is available on weekends.", "source_snippet": "The service is available on weekends."},
+    {"fact_id": "fact_2", "label": "duration", "value": "Visits are booked in two-hour slots.", "source_snippet": "Visits are booked in two-hour slots."}
+  ]
+}

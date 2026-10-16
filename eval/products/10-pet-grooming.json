@@ -1,0 +1,16 @@
+{
+  "name": "Mobile pet grooming",
+  "category": "Pet service",
+  "description": "A mobile grooming service for dogs that visits customers by appointment.",
+  "features": ["For dogs", "Mobile service", "Appointment required"],
+  "price": null,
+  "rating": null,
+  "reviews": [],
+  "images": [],
+  "source_url": null,
+  "facts": [
+    {"fact_id": "fact_1", "label": "service", "value": "The grooming service is for dogs.", "source_snippet": "The grooming service is for dogs."},
+    {"fact_id": "fact_2", "label": "delivery", "value": "The mobile service visits customers.", "source_snippet": "The mobile service visits customers."},
+    {"fact_id": "fact_3", "label": "booking", "value": "Customers book an appointment.", "source_snippet": "Customers book an appointment."}
+  ]
+}

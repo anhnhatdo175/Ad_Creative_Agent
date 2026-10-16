@@ -1,0 +1,12 @@
+{
+  "name": "Language learning app",
+  "category": "Software",
+  "description": "A mobile app offering daily language practice lessons.",
+  "features": ["Daily practice lessons"],
+  "price": null,
+  "rating": null,
+  "reviews": [],
+  "images": [],
+  "source_url": null,
+  "facts": [{"fact_id": "fact_1", "label": "feature", "value": "The app offers daily language practice lessons.", "source_snippet": "The app offers daily language practice lessons."}]
+}

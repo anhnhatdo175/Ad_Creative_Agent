@@ -1,0 +1,12 @@
+{
+  "name": "Reusable water bottle",
+  "category": "Home goods",
+  "description": "A reusable water bottle made from stainless steel.",
+  "features": ["Made from stainless steel"],
+  "price": null,
+  "rating": null,
+  "reviews": [],
+  "images": [],
+  "source_url": null,
+  "facts": [{"fact_id": "fact_1", "label": "material", "value": "Made from stainless steel.", "source_snippet": "Made from stainless steel."}]
+}

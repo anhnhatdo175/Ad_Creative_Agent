@@ -1,0 +1,15 @@
+{
+  "name": "Foldable laptop stand",
+  "category": "Electronics accessory",
+  "description": "A foldable aluminum stand for laptop computers.",
+  "features": ["Foldable", "Aluminum"],
+  "price": null,
+  "rating": null,
+  "reviews": [],
+  "images": [],
+  "source_url": null,
+  "facts": [
+    {"fact_id": "fact_1", "label": "feature", "value": "The stand is foldable.", "source_snippet": "The stand is foldable."},
+    {"fact_id": "fact_2", "label": "material", "value": "Made of aluminum.", "source_snippet": "Made of aluminum."}
+  ]
+}

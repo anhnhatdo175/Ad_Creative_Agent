@@ -1,0 +1,15 @@
+{
+  "name": "Online tax consultation",
+  "category": "Professional service",
+  "description": "A remote tax consultation delivered by video call. Sessions last 45 minutes.",
+  "features": ["Video call", "45-minute sessions"],
+  "price": null,
+  "rating": null,
+  "reviews": [],
+  "images": [],
+  "source_url": null,
+  "facts": [
+    {"fact_id": "fact_1", "label": "delivery", "value": "The consultation is delivered by video call.", "source_snippet": "The consultation is delivered by video call."},
+    {"fact_id": "fact_2", "label": "duration", "value": "Sessions last 45 minutes.", "source_snippet": "Sessions last 45 minutes."}
+  ]
+}

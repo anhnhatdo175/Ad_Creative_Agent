@@ -1,0 +1,15 @@
+{
+  "name": "Ceramic coffee mug",
+  "category": "Home goods",
+  "description": "A ceramic mug with a 350 ml capacity and dishwasher-safe finish.",
+  "features": ["350 ml capacity", "Dishwasher safe"],
+  "price": null,
+  "rating": null,
+  "reviews": [],
+  "images": [],
+  "source_url": null,
+  "facts": [
+    {"fact_id": "fact_1", "label": "capacity", "value": "The mug holds 350 ml.", "source_snippet": "The mug holds 350 ml."},
+    {"fact_id": "fact_2", "label": "care", "value": "The mug is dishwasher safe.", "source_snippet": "The mug is dishwasher safe."}
+  ]
+}

@@ -1,0 +1,8 @@
+Create exactly three advertising variants in Vietnamese. Give each variant a different angle chosen from pain_point, social_proof, curiosity, benefit, urgency, or comparison. Include a caption, short 15-second voiceover script, three storyboard scenes with visual/voiceover/duration, one image prompt, and fact_ids. Use the product facts when writing.
+
+Image prompt requirements:
+- Write the image prompt in concise English for a text-to-image model.
+- Describe one specific advertising shot based on the product and the variant angle. Prefer a clear hero subject, intentional composition, plausible setting, camera framing, and lighting.
+- Use only product attributes supported by product facts. Do not invent materials, colors, controls, packaging, logos, people using the product, or product capabilities.
+- Do not ask for visible text, labels, logos, watermarks, collages, or multiple product variations.
+- Make the image visually polished and photorealistic unless the product or concept clearly calls for another medium.

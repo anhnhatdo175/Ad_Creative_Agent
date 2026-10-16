@@ -1,0 +1,16 @@
+{
+  "name": "Cotton tote bag",
+  "category": "Accessories",
+  "description": "A reusable tote bag made from cotton with an interior pocket.",
+  "features": ["Cotton", "Interior pocket", "Reusable"],
+  "price": null,
+  "rating": null,
+  "reviews": [],
+  "images": [],
+  "source_url": null,
+  "facts": [
+    {"fact_id": "fact_1", "label": "material", "value": "Made from cotton.", "source_snippet": "Made from cotton."},
+    {"fact_id": "fact_2", "label": "feature", "value": "The bag has an interior pocket.", "source_snippet": "The bag has an interior pocket."},
+    {"fact_id": "fact_3", "label": "use", "value": "The tote bag is reusable.", "source_snippet": "The tote bag is reusable."}
+  ]
+}

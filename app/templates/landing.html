@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f8f5">
+  <meta property="og:title" content="{{ facts.name }}">
+  <meta property="og:description" content="{{ variant.caption[:180] }}">
+  {% if product_image_url %}<meta property="og:image" content="{{ product_image_url }}">{% elif concept_image_url %}<meta property="og:image" content="{{ concept_image_url }}">{% endif %}
+  <title>{{ facts.name }} · Product details</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="shell landing-page">
+    <header class="landing-header">
+      <a class="landing-back" href="/jobs/{{ job_id }}/page">← Back to ad pack</a>
+      <span class="concept-label">{{ variant.angle | replace("_", " ") | title }} concept</span>
+    </header>
+
+    <section class="landing-hero" id="top">
+      <div class="landing-copy">
+        <p class="eyebrow">PRODUCT DETAILS</p>
+        <h1>{{ facts.name }}</h1>
+        <p class="landing-lead">{{ variant.caption }}</p>
+        <a class="button landing-cta" href="/r/{{ variant_id }}">
+          {% if facts.source_url %}Visit product website{% else %}Product link unavailable{% endif %}
+          <span aria-hidden="true">→</span>
+        </a>
+        {% if not facts.source_url %}
+          <p class="field-hint">No product website URL was provided.</p>
+        {% endif %}
+      </div>
+      <div class="landing-visual">
+        {% if product_image_url %}
+          <img class="landing-image" src="{{ product_image_url }}" alt="{{ facts.name }} product image" referrerpolicy="no-referrer">
+        {% elif concept_image_url %}
+          <img class="landing-image" src="{{ concept_image_url }}" alt="AI-generated concept image for {{ facts.name }}">
+        {% else %}
+          <div class="landing-image-placeholder" role="img" aria-label="No generated product image">
+            <span class="placeholder-mark" aria-hidden="true">✳</span>
+            <span>{% if facts.source_url %}Product image unavailable{% else %}Product image{% endif %}</span>
+          </div>
+        {% endif %}
+        {% if facts.price or facts.rating %}
+          <div class="product-facts-badges">
+            {% if facts.price %}<span>{{ facts.price }}</span>{% endif %}
+            {% if facts.rating %}<span>Rating {{ facts.rating }}</span>{% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </section>
+
+    {% if cited_facts %}
+      <section class="landing-proof" aria-labelledby="facts-title">
+        <div class="landing-section-heading">
+          <p class="eyebrow">PRODUCT DETAILS</p>
+          <h2 id="facts-title">Product facts</h2>
+        </div>
+        <ul class="landing-feature-list">
+          {% for fact in cited_facts[:3] %}
+            <li><span class="check" aria-hidden="true">✓</span><span class="fact-value">{{ fact.value }}</span></li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+
+    <section class="landing-bottom-cta">
+      <div>
+        <p class="eyebrow">NEXT STEP</p>
+        <h2>{% if facts.source_url %}Visit the product website{% else %}Product website unavailable{% endif %}</h2>
+      </div>
+      <a class="button" href="/r/{{ variant_id }}">
+        {% if facts.source_url %}Go to product website{% else %}View link information{% endif %}
+        <span aria-hidden="true">→</span>
+      </a>
+    </section>
+    <footer class="landing-footer">Product information from the supplied source. Verify details before purchase.</footer>
+  </main>
+</body>
+</html>
